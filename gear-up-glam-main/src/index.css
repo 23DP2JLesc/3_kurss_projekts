@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 30 100% 50%;
+    --accent-foreground: 0 0% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 30 100% 50%;
+
+    --radius: 0.5rem;
+
+    /* Custom design tokens */
+    --orange-glow: 30 100% 50%;
+    --racing-black: 0 0% 4%;
+    --carbon-gray: 0 0% 8%;
+    --steel-gray: 0 0% 20%;
+    
+    /* Gradients */
+    --gradient-racing: linear-gradient(135deg, hsl(30 100% 50%) 0%, hsl(25 100% 45%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 6%) 0%, hsl(0 0% 3%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 9%) 0%, hsl(0 0% 5%) 100%);
+    
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(30 100% 50% / 0.3);
+    --shadow-card: 0 10px 40px hsl(0 0% 0% / 0.5);
+    --shadow-hover: 0 20px 60px hsl(30 100% 50% / 0.2);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 30 100% 50%;
+    --accent-foreground: 0 0% 4%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+  }
+
+  /* Light mode theme */
+  :root:not(.dark) {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 30 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-racing);
+  }
+
+  .card-racing {
+    background: var(--gradient-card);
+    @apply border border-border rounded-lg transition-all duration-500;
+  }
+
+  .card-racing:hover {
+    box-shadow: var(--shadow-hover);
+    @apply border-primary/30;
+    transform: translateY(-4px);
+  }
+
+  .btn-racing {
+    background: var(--gradient-racing);
+    @apply text-primary-foreground font-semibold px-8 py-4 rounded-md transition-all duration-300;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-racing:hover {
+    @apply scale-105;
+    box-shadow: 0 0 50px hsl(30 100% 50% / 0.5);
+  }
+
+  .glow-line {
+    @apply h-px w-full;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
+  }
+}
+
+@layer utilities {
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-8px);
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+}
