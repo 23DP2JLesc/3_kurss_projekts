@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://your-railway-domain.up.railway.app/api';
 
 export interface ApiResponse<T> {
   data?: T;
@@ -49,52 +49,52 @@ const apiFetch = async <T = any>(
 
 export const authApi = {
   register: (email: string, password: string, displayName: string) =>
-    apiFetch<ApiResponse<any>>('/api/auth/register', {
+    apiFetch<ApiResponse<any>>('/auth/register', {
       method: 'POST',
       body: JSON.stringify({ email, password, displayName }),
     }),
 
   login: (email: string, password: string) =>
-    apiFetch<ApiResponse<any>>('/api/auth/login', {
+    apiFetch<ApiResponse<any>>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     }),
 
   logout: () => {
     clearAuthToken();
-    return apiFetch('/api/auth/logout', { method: 'POST' });
+    return apiFetch('/auth/logout', { method: 'POST' });
   },
 };
 
 export const productsApi = {
   getAll: (filters?: { category?: string; brand?: string; search?: string }) =>
-    apiFetch('/api/products', { method: 'GET' }),
+    apiFetch('/products', { method: 'GET' }),
 
   getById: (id: string) =>
-    apiFetch(`/api/products/${id}`, { method: 'GET' }),
+    apiFetch(`/products/${id}`, { method: 'GET' }),
 
   create: (data: any) =>
-    apiFetch('/api/products', {
+    apiFetch('/products', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
   update: (id: string, data: any) =>
-    apiFetch(`/api/products/${id}`, {
+    apiFetch(`/products/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
 
   delete: (id: string) =>
-    apiFetch(`/api/products/${id}`, { method: 'DELETE' }),
+    apiFetch(`/products/${id}`, { method: 'DELETE' }),
 };
 
 export const ordersApi = {
   getAll: () =>
-    apiFetch('/api/orders', { method: 'GET' }),
+    apiFetch('/orders', { method: 'GET' }),
 
   create: (items: any[]) =>
-    apiFetch('/api/orders', {
+    apiFetch('/orders', {
       method: 'POST',
       body: JSON.stringify({ items }),
     }),
@@ -102,10 +102,10 @@ export const ordersApi = {
 
 export const profileApi = {
   get: () =>
-    apiFetch('/api/profile', { method: 'GET' }),
+    apiFetch('/profile', { method: 'GET' }),
 
   update: (data: any) =>
-    apiFetch('/api/profile', {
+    apiFetch('/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
@@ -113,22 +113,22 @@ export const profileApi = {
 
 export const usersApi = {
   getAll: () =>
-    apiFetch('/api/users', { method: 'GET' }),
+    apiFetch('/users', { method: 'GET' }),
 
   updateRole: (id: string, role: string) =>
-    apiFetch(`/api/users/${id}/role`, {
+    apiFetch(`/users/${id}/role`, {
       method: 'PUT',
       body: JSON.stringify({ role }),
     }),
 
   banUser: (id: string, banned: boolean) =>
-    apiFetch(`/api/users/${id}/status`, {
+    apiFetch(`/users/${id}/status`, {
       method: 'PUT',
       body: JSON.stringify({ banned }),
     }),
 
   updateStatus: (id: string, data: { banned?: boolean; warning_message?: string }) =>
-    apiFetch(`/api/users/${id}/status`, {
+    apiFetch(`/users/${id}/status`, {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
@@ -136,59 +136,59 @@ export const usersApi = {
 
 export const reviewsApi = {
   getAll: (productId: string) =>
-    apiFetch(`/api/products/${productId}/reviews`, { method: 'GET' }),
+    apiFetch(`/products/${productId}/reviews`, { method: 'GET' }),
 
   create: (productId: string, data: { rating: number; comment: string }) =>
-    apiFetch(`/api/products/${productId}/reviews`, {
+    apiFetch(`/products/${productId}/reviews`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
   delete: (productId: string, reviewId: string) =>
-    apiFetch(`/api/products/${productId}/reviews/${reviewId}`, {
+    apiFetch(`/products/${productId}/reviews/${reviewId}`, {
       method: 'DELETE',
     }),
 };
 
 export const cartApi = {
   getCart: () =>
-    apiFetch('/api/cart', { method: 'GET' }),
+    apiFetch('/cart', { method: 'GET' }),
 
   addItem: (productId: string, quantity: number) =>
-    apiFetch('/api/cart/items', {
+    apiFetch('/cart/items', {
       method: 'POST',
       body: JSON.stringify({ productId, quantity }),
     }),
 
   updateItem: (itemId: string, quantity: number) =>
-    apiFetch(`/api/cart/items/${itemId}`, {
+    apiFetch(`/cart/items/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify({ quantity }),
     }),
 
   removeItem: (itemId: string) =>
-    apiFetch(`/api/cart/items/${itemId}`, { method: 'DELETE' }),
+    apiFetch(`/cart/items/${itemId}`, { method: 'DELETE' }),
 
   clearCart: () =>
-    apiFetch('/api/cart', { method: 'DELETE' }),
+    apiFetch('/cart', { method: 'DELETE' }),
 };
 
 export const categoriesApi = {
   getAll: () =>
-    apiFetch('/api/categories', { method: 'GET' }),
+    apiFetch('/categories', { method: 'GET' }),
 
   create: (data: { name: string; description?: string }) =>
-    apiFetch('/api/categories', {
+    apiFetch('/categories', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
   update: (id: string, data: { name: string; description?: string }) =>
-    apiFetch(`/api/categories/${id}`, {
+    apiFetch(`/categories/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
 
   delete: (id: string) =>
-    apiFetch(`/api/categories/${id}`, { method: 'DELETE' }),
+    apiFetch(`/categories/${id}`, { method: 'DELETE' }),
 };
