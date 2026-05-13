@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { createOrderSchema, CreateOrderInput } from "@/utils/validation";
-import { ApiError } from "@/utils/errors";
+import { createOrderSchema, CreateOrderInput } from "../utils/validation.js";
+import { ApiError } from "../utils/errors.js";
 
 const prisma = new PrismaClient();
 

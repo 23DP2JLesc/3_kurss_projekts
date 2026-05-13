@@ -5,8 +5,8 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-} from "@/controllers/productController";
-import { authMiddleware, adminMiddleware } from "../middleware/auth";
+} from "../controllers/productController.js";
+import { authMiddleware, adminMiddleware } from "../middleware/auth.js";
 
 const router = Router();
 

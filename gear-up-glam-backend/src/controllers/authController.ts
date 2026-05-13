@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { generateToken } from "../utils/jwt";
-import { hashPassword, verifyPassword } from "../utils/password";
-import { registerSchema, loginSchema, RegisterInput, LoginInput } from "../utils/validation";
-import { ApiError } from "../utils/errors";
+import { generateToken } from "../utils/jwt.js";
+import { hashPassword, verifyPassword } from "../utils/password.js";
+import { registerSchema, loginSchema, RegisterInput, LoginInput } from "../utils/validation.js";
+import { ApiError } from "../utils/errors.js";
 
 const prisma = new PrismaClient();
 

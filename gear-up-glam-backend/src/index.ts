@@ -1,19 +1,19 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { errorHandler } from "./middleware/errorHandler";
-import cartRoutes from "./routes/cart";
-import categoryRoutes from "./routes/categories";
-import authRoutes from "./routes/auth";
-import productRoutes from "./routes/products";
-import reviewRoutes from "./routes/reviews";
-import orderRoutes from "./routes/orders";
-import profileRoutes from "./routes/profile";
-import userRoutes from "./routes/users";
+import { errorHandler } from "./middleware/errorHandler.js";
+import cartRoutes from "./routes/cart.js";
+import categoryRoutes from "./routes/categories.js";
+import authRoutes from "./routes/auth.js";
+import productRoutes from "./routes/products.js";
+import reviewRoutes from "./routes/reviews.js";
+import orderRoutes from "./routes/orders.js";
+import profileRoutes from "./routes/profile.js";
+import userRoutes from "./routes/users.js";
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -58,8 +58,8 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(port, () => {
-  console.log(`✅ Server running on http://localhost:${port}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
   console.log(`📝 Frontend URL: ${allowedOrigins[0]}`);
   console.log(`🗄️  Database: ${process.env.DATABASE_URL?.split("@")[1]}`);
 });

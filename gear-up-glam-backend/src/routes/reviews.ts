@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getProductReviews, createReview, deleteReview } from "@/controllers/reviewController";
-import { authMiddleware } from "../middleware/auth";
+import { getProductReviews, createReview, deleteReview } from "../controllers/reviewController.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 const router = Router({ mergeParams: true });
 
