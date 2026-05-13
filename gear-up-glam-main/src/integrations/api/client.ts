@@ -1,6 +1,14 @@
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  'https://zoological-patience-production-aede.up.railway.app/api';
+/**
+ * API CONFIGURATION
+ */
+const getBaseUrl = (): string => {
+  // Priority 1: Railway Environment Variable
+  // Priority 2: Localhost for development
+  const url = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  return url.replace(/\/$/, ''); // Remove trailing slash
+};
+
+const API_URL = `${getBaseUrl()}/api`;
 
 export interface ApiResponse<T> {
   data?: T;
@@ -10,23 +18,19 @@ export interface ApiResponse<T> {
   user?: any;
 }
 
-const getAuthToken = () => {
-  return localStorage.getItem('auth_token');
-};
+// --- TOKEN MANAGEMENT ---
+const getAuthToken = () => localStorage.getItem('auth_token');
+export const setAuthToken = (token: string) => localStorage.setItem('auth_token', token);
+export const clearAuthToken = () => localStorage.removeItem('auth_token');
 
-export const setAuthToken = (token: string) => {
-  localStorage.setItem('auth_token', token);
-};
-
-export const clearAuthToken = () => {
-  localStorage.removeItem('auth_token');
-};
-
+// --- CORE FETCH WRAPPER ---
 const apiFetch = async <T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> => {
   const token = getAuthToken();
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const finalUrl = `${API_URL}${cleanEndpoint}`;
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
@@ -37,38 +41,37 @@ const apiFetch = async <T = any>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const response = await fetch(finalUrl, {
     ...options,
     headers,
   });
 
   if (!response.ok) {
     let errorMessage = `API Error: ${response.status}`;
-
     try {
       const error = await response.json();
       errorMessage = error?.error || errorMessage;
-    } catch {}
-
+    } catch (e) {
+      // Not a JSON error
+    }
     throw new Error(errorMessage);
   }
 
   return response.json();
 };
 
+// --- API MODULES ---
 export const authApi = {
   register: (email: string, password: string, displayName: string) =>
     apiFetch<ApiResponse<any>>('/auth/register', {
       method: 'POST',
       body: JSON.stringify({ email, password, displayName }),
     }),
-
   login: (email: string, password: string) =>
     apiFetch<ApiResponse<any>>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     }),
-
   logout: () => {
     clearAuthToken();
     return apiFetch('/auth/logout', { method: 'POST' });
@@ -78,134 +81,52 @@ export const authApi = {
 export const productsApi = {
   getAll: (filters?: { category?: string; brand?: string; search?: string }) => {
     const params = new URLSearchParams();
-
     if (filters?.category) params.append('category', filters.category);
     if (filters?.brand) params.append('brand', filters.brand);
     if (filters?.search) params.append('search', filters.search);
-
-    const query = params.toString();
-
-    return apiFetch(`/products${query ? `?${query}` : ''}`, {
-      method: 'GET',
-    });
+    return apiFetch(`/products${params.toString() ? `?${params.toString()}` : ''}`);
   },
-
-  getById: (id: string) =>
-    apiFetch(`/products/${id}`, { method: 'GET' }),
-
-  create: (data: any) =>
-    apiFetch('/products', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  update: (id: string, data: any) =>
-    apiFetch(`/products/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }),
-
-  delete: (id: string) =>
-    apiFetch(`/products/${id}`, { method: 'DELETE' }),
+  getById: (id: string) => apiFetch(`/products/${id}`),
+  create: (data: any) => apiFetch('/products', { method: 'POST', body: JSON.stringify(data) }),
+  update: (id: string, data: any) => apiFetch(`/products/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  delete: (id: string) => apiFetch(`/products/${id}`, { method: 'DELETE' }),
 };
 
 export const ordersApi = {
-  getAll: () => apiFetch('/orders', { method: 'GET' }),
-
-  create: (items: any[]) =>
-    apiFetch('/orders', {
-      method: 'POST',
-      body: JSON.stringify({ items }),
-    }),
+  getAll: () => apiFetch('/orders'),
+  create: (items: any[]) => apiFetch('/orders', { method: 'POST', body: JSON.stringify({ items }) }),
 };
 
 export const profileApi = {
-  get: () => apiFetch('/profile', { method: 'GET' }),
-
-  update: (data: any) =>
-    apiFetch('/profile', {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }),
+  get: () => apiFetch('/profile'),
+  update: (data: any) => apiFetch('/profile', { method: 'PUT', body: JSON.stringify(data) }),
 };
 
 export const usersApi = {
-  getAll: () => apiFetch('/users', { method: 'GET' }),
-
-  updateRole: (id: string, role: string) =>
-    apiFetch(`/users/${id}/role`, {
-      method: 'PUT',
-      body: JSON.stringify({ role }),
-    }),
-
-  banUser: (id: string, banned: boolean) =>
-    apiFetch(`/users/${id}/status`, {
-      method: 'PUT',
-      body: JSON.stringify({ banned }),
-    }),
-
+  getAll: () => apiFetch('/users'),
+  updateRole: (id: string, role: string) => apiFetch(`/users/${id}/role`, { method: 'PUT', body: JSON.stringify({ role }) }),
   updateStatus: (id: string, data: { banned?: boolean; warning_message?: string }) =>
-    apiFetch(`/users/${id}/status`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }),
+    apiFetch(`/users/${id}/status`, { method: 'PUT', body: JSON.stringify(data) }),
 };
 
 export const reviewsApi = {
-  getAll: (productId: string) =>
-    apiFetch(`/products/${productId}/reviews`, { method: 'GET' }),
-
+  getAll: (productId: string) => apiFetch(`/products/${productId}/reviews`),
   create: (productId: string, data: { rating: number; comment: string }) =>
-    apiFetch(`/products/${productId}/reviews`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  delete: (productId: string, reviewId: string) =>
-    apiFetch(`/products/${productId}/reviews/${reviewId}`, {
-      method: 'DELETE',
-    }),
+    apiFetch(`/products/${productId}/reviews`, { method: 'POST', body: JSON.stringify(data) }),
+  delete: (productId: string, reviewId: string) => apiFetch(`/products/${productId}/reviews/${reviewId}`, { method: 'DELETE' }),
 };
 
 export const cartApi = {
-  getCart: () => apiFetch('/cart', { method: 'GET' }),
-
-  addItem: (productId: string, quantity: number) =>
-    apiFetch('/cart/items', {
-      method: 'POST',
-      body: JSON.stringify({ productId, quantity }),
-    }),
-
-  updateItem: (itemId: string, quantity: number) =>
-    apiFetch(`/cart/items/${itemId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ quantity }),
-    }),
-
-  removeItem: (itemId: string) =>
-    apiFetch(`/cart/items/${itemId}`, { method: 'DELETE' }),
-
-  clearCart: () =>
-    apiFetch('/cart', { method: 'DELETE' }),
+  getCart: () => apiFetch('/cart'),
+  addItem: (productId: string, quantity: number) => apiFetch('/cart/items', { method: 'POST', body: JSON.stringify({ productId, quantity }) }),
+  updateItem: (itemId: string, quantity: number) => apiFetch(`/cart/items/${itemId}`, { method: 'PUT', body: JSON.stringify({ quantity }) }),
+  removeItem: (itemId: string) => apiFetch(`/cart/items/${itemId}`, { method: 'DELETE' }),
+  clearCart: () => apiFetch('/cart', { method: 'DELETE' }),
 };
 
 export const categoriesApi = {
-  getAll: () => apiFetch('/categories', { method: 'GET' }),
-
-  create: (data: { name: string; description?: string }) =>
-    apiFetch('/categories', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  update: (id: string, data: { name: string; description?: string }) =>
-    apiFetch(`/categories/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }),
-
-  delete: (id: string) =>
-    apiFetch(`/categories/${id}`, {
-      method: 'DELETE',
-    }),
+  getAll: () => apiFetch('/categories'),
+  create: (data: { name: string; description?: string }) => apiFetch('/categories', { method: 'POST', body: JSON.stringify(data) }),
+  update: (id: string, data: { name: string; description?: string }) => apiFetch(`/categories/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  delete: (id: string) => apiFetch(`/categories/${id}`, { method: 'DELETE' }),
 };

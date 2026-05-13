@@ -14,55 +14,29 @@ import profileRoutes from "./routes/profile.js";
 import userRoutes from "./routes/users.js";
 
 const app = express();
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const PORT = process.env.PORT || 8080;
 
-/**
- * -----------------------
- * CORS (MUST BE FIRST)
- * -----------------------
- */
+// CORS SETUP
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "https://3kurssprojekts-production.up.railway.app",
+  process.env.FRONTEND_URL, 
+  "https://zoological-patience-production-aede.up.railway.app",
   "http://localhost:5173"
 ].filter(Boolean) as string[];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
 
-/**
- * Handle preflight requests
- */
-app.options("*", cors());
-
-/**
- * -----------------------
- * BODY PARSING
- * -----------------------
- */
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-/**
- * -----------------------
- * HEALTH CHECK
- * -----------------------
- */
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
-});
-
-/**
- * -----------------------
- * API ROUTES
- * -----------------------
- */
+// API ROUTES (Note the /api prefix)
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/products/:productId/reviews", reviewRoutes);
@@ -72,29 +46,16 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/categories", categoryRoutes);
 
-/**
- * -----------------------
- * 404 HANDLER
- * -----------------------
- */
+// Health Check
+app.get("/health", (req, res) => res.json({ status: "ok" }));
+
+// 404 Handler
 app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
+  res.status(404).json({ error: `Route ${req.originalUrl} not found` });
 });
 
-/**
- * -----------------------
- * ERROR HANDLER
- * -----------------------
- */
 app.use(errorHandler);
 
-/**
- * -----------------------
- * START SERVER
- * -----------------------
- */
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-  console.log(`📝 Frontend URL: ${allowedOrigins[0]}`);
-  console.log(`🗄️ Database: ${process.env.DATABASE_URL?.split("@")[1]}`);
+  console.log(`✅ Backend running on port ${PORT}`);
 });
