@@ -25,14 +25,13 @@ const allowedOrigins = [
   "http://localhost:5173"
 ].filter((origin): origin is string => Boolean(origin));
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({
+  origin: [
+    "https://3kurssprojekts-production.up.railway.app",
+    "http://localhost:5173"
+  ],
+  credentials: true
+}));
 
 // Health check
 app.get("/health", (req, res) => {
