@@ -20,11 +20,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
-const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:5173").split(",");
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: frontendUrl,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
