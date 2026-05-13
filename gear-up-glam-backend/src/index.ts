@@ -1,15 +1,15 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { errorHandler } from "@/middleware/errorHandler";
-import cartRoutes from "@/routes/cart";
-import categoryRoutes from "@/routes/categories";
-import authRoutes from "@/routes/auth";
-import productRoutes from "@/routes/products";
-import reviewRoutes from "@/routes/reviews";
-import orderRoutes from "@/routes/orders";
-import profileRoutes from "@/routes/profile";
-import userRoutes from "@/routes/users";
+import { errorHandler } from "./middleware/errorHandler";
+import cartRoutes from "./routes/cart";
+import categoryRoutes from "./routes/categories";
+import authRoutes from "./routes/auth";
+import productRoutes from "./routes/products";
+import reviewRoutes from "./routes/reviews";
+import orderRoutes from "./routes/orders";
+import profileRoutes from "./routes/profile";
+import userRoutes from "./routes/users";
 
 
 const app = express();
@@ -20,11 +20,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
-const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:5173"
+].filter((origin): origin is string => Boolean(origin));
 
 app.use(
   cors({
-    origin: frontendUrl,
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],

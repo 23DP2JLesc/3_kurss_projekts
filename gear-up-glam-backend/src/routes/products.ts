@@ -6,7 +6,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "@/controllers/productController";
-import { authMiddleware, adminMiddleware } from "@/middleware/auth";
+import { authMiddleware, adminMiddleware } from "../middleware/auth";
 
 const router = Router();
 

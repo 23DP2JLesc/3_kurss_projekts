@@ -6,12 +6,15 @@ export interface JwtPayload {
   role: string;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
-const JWT_EXPIRY = process.env.JWT_EXPIRY || "7d";
+const JWT_SECRET = process.env.JWT_SECRET;
 
-export const generateToken = (payload: JwtPayload): string => {
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is missing");
+}
+
+export const generateToken = (payload: object) => {
   return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRY,
+    expiresIn: "7d"
   });
 };
 
