@@ -1,7 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+
 import { errorHandler } from "./middleware/errorHandler.js";
+
 import cartRoutes from "./routes/cart.js";
 import categoryRoutes from "./routes/categories.js";
 import authRoutes from "./routes/auth.js";
@@ -11,34 +13,56 @@ import orderRoutes from "./routes/orders.js";
 import profileRoutes from "./routes/profile.js";
 import userRoutes from "./routes/users.js";
 
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
-// Middleware
+/**
+ * -----------------------
+ * CORS (MUST BE FIRST)
+ * -----------------------
+ */
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "https://3kurssprojekts-production.up.railway.app",
+  "http://localhost:5173"
+].filter(Boolean) as string[];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+/**
+ * Handle preflight requests
+ */
+app.options("*", cors());
+
+/**
+ * -----------------------
+ * BODY PARSING
+ * -----------------------
+ */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS configuration
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:5173"
-].filter((origin): origin is string => Boolean(origin));
-
-app.use(cors({
-  origin: [
-    "https://3kurssprojekts-production.up.railway.app",
-    "http://localhost:5173"
-  ],
-  credentials: true
-}));
-
-// Health check
+/**
+ * -----------------------
+ * HEALTH CHECK
+ * -----------------------
+ */
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// API Routes
+/**
+ * -----------------------
+ * API ROUTES
+ * -----------------------
+ */
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/products/:productId/reviews", reviewRoutes);
@@ -48,17 +72,29 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/categories", categoryRoutes);
 
-// 404 handler
+/**
+ * -----------------------
+ * 404 HANDLER
+ * -----------------------
+ */
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
-// Error handler (must be last middleware)
+/**
+ * -----------------------
+ * ERROR HANDLER
+ * -----------------------
+ */
 app.use(errorHandler);
 
-// Start server
+/**
+ * -----------------------
+ * START SERVER
+ * -----------------------
+ */
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
   console.log(`📝 Frontend URL: ${allowedOrigins[0]}`);
-  console.log(`🗄️  Database: ${process.env.DATABASE_URL?.split("@")[1]}`);
+  console.log(`🗄️ Database: ${process.env.DATABASE_URL?.split("@")[1]}`);
 });
