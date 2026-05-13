@@ -25,6 +25,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -36,7 +37,10 @@ app.use(cors({
 
 app.use(express.json());
 
-// API ROUTES (Note the /api prefix)
+/**
+ * API ROUTES
+ * IMPORTANT: Everything is prefixed with /api
+ */
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/products/:productId/reviews", reviewRoutes);
@@ -46,10 +50,10 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/categories", categoryRoutes);
 
-// Health Check
-app.get("/health", (req, res) => res.json({ status: "ok" }));
+// Health Check for Railway
+app.get("/health", (req, res) => res.json({ status: "ok", message: "Server is healthy" }));
 
-// 404 Handler
+// 404 Handler for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.originalUrl} not found` });
 });

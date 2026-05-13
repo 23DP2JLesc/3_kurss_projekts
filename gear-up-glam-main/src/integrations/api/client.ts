@@ -5,7 +5,7 @@ const getBaseUrl = (): string => {
   // Priority 1: Railway Environment Variable
   // Priority 2: Localhost for development
   const url = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-  return url.replace(/\/$/, ''); // Remove trailing slash
+  return url.replace(/\/$/, ''); // Remove any trailing slash
 };
 
 const API_URL = `${getBaseUrl()}/api`;
