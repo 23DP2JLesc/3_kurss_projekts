@@ -1,4 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL || 'https://your-railway-domain.up.railway.app/api';
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://zoological-patience-production-aede.up.railway.app/api';
 
 export interface ApiResponse<T> {
   data?: T;
@@ -25,9 +27,10 @@ const apiFetch = async <T = any>(
   options: RequestInit = {}
 ): Promise<T> => {
   const token = getAuthToken();
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    ...options.headers,
+    ...(options.headers || {}),
   };
 
   if (token) {
@@ -40,8 +43,14 @@ const apiFetch = async <T = any>(
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || `API Error: ${response.status}`);
+    let errorMessage = `API Error: ${response.status}`;
+
+    try {
+      const error = await response.json();
+      errorMessage = error?.error || errorMessage;
+    } catch {}
+
+    throw new Error(errorMessage);
   }
 
   return response.json();
@@ -67,8 +76,19 @@ export const authApi = {
 };
 
 export const productsApi = {
-  getAll: (filters?: { category?: string; brand?: string; search?: string }) =>
-    apiFetch('/products', { method: 'GET' }),
+  getAll: (filters?: { category?: string; brand?: string; search?: string }) => {
+    const params = new URLSearchParams();
+
+    if (filters?.category) params.append('category', filters.category);
+    if (filters?.brand) params.append('brand', filters.brand);
+    if (filters?.search) params.append('search', filters.search);
+
+    const query = params.toString();
+
+    return apiFetch(`/products${query ? `?${query}` : ''}`, {
+      method: 'GET',
+    });
+  },
 
   getById: (id: string) =>
     apiFetch(`/products/${id}`, { method: 'GET' }),
@@ -90,8 +110,7 @@ export const productsApi = {
 };
 
 export const ordersApi = {
-  getAll: () =>
-    apiFetch('/orders', { method: 'GET' }),
+  getAll: () => apiFetch('/orders', { method: 'GET' }),
 
   create: (items: any[]) =>
     apiFetch('/orders', {
@@ -101,8 +120,7 @@ export const ordersApi = {
 };
 
 export const profileApi = {
-  get: () =>
-    apiFetch('/profile', { method: 'GET' }),
+  get: () => apiFetch('/profile', { method: 'GET' }),
 
   update: (data: any) =>
     apiFetch('/profile', {
@@ -112,8 +130,7 @@ export const profileApi = {
 };
 
 export const usersApi = {
-  getAll: () =>
-    apiFetch('/users', { method: 'GET' }),
+  getAll: () => apiFetch('/users', { method: 'GET' }),
 
   updateRole: (id: string, role: string) =>
     apiFetch(`/users/${id}/role`, {
@@ -151,8 +168,7 @@ export const reviewsApi = {
 };
 
 export const cartApi = {
-  getCart: () =>
-    apiFetch('/cart', { method: 'GET' }),
+  getCart: () => apiFetch('/cart', { method: 'GET' }),
 
   addItem: (productId: string, quantity: number) =>
     apiFetch('/cart/items', {
@@ -174,8 +190,7 @@ export const cartApi = {
 };
 
 export const categoriesApi = {
-  getAll: () =>
-    apiFetch('/categories', { method: 'GET' }),
+  getAll: () => apiFetch('/categories', { method: 'GET' }),
 
   create: (data: { name: string; description?: string }) =>
     apiFetch('/categories', {
@@ -190,5 +205,7 @@ export const categoriesApi = {
     }),
 
   delete: (id: string) =>
-    apiFetch(`/categories/${id}`, { method: 'DELETE' }),
+    apiFetch(`/categories/${id}`, {
+      method: 'DELETE',
+    }),
 };
