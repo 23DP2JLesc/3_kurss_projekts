@@ -80,4 +80,31 @@ export const authApi = {
   },
 };
 
-// ... (pārējie API moduļi paliek tādi paši, jo tie visi izmanto apiFetch)
+export const cartApi = {
+  getCart: () =>
+    apiFetch<any>('/cart', { method: 'GET' }),
+  addItem: (productId: string, quantity: number) =>
+    apiFetch<any>('/cart/items', {
+      method: 'POST',
+      body: JSON.stringify({ productId, quantity }),
+    }),
+  updateItem: (cartItemId: string, quantity: number) =>
+    apiFetch<any>(`/cart/items/${cartItemId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ quantity }),
+    }),
+  removeItem: (cartItemId: string) =>
+    apiFetch<any>(`/cart/items/${cartItemId}`, {
+      method: 'DELETE',
+    }),
+  clearCart: () =>
+    apiFetch<any>('/cart', { method: 'DELETE' }),
+};
+
+export const ordersApi = {
+  create: (items: { productId: string; quantity: number; price: number }[]) =>
+    apiFetch<any>('/orders', {
+      method: 'POST',
+      body: JSON.stringify({ items }),
+    }),
+};
