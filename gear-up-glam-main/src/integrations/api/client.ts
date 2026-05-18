@@ -65,13 +65,13 @@ const apiFetch = async <T = any>(
 // --- API MODUĻI ---
 export const authApi = {
   register: (email: string, password: string, displayName: string) =>
-    apiFetch<ApiResponse<any>>('/auth/register', {
-      method: 'POST',
+    apiFetch("/auth/register", {
+      method: "POST",
       body: JSON.stringify({ email, password, displayName }),
     }),
   login: (email: string, password: string) =>
-    apiFetch<ApiResponse<any>>('/auth/login', {
-      method: 'POST',
+    apiFetch("/auth/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
     }),
   logout: () => {
