@@ -11,7 +11,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const { cart, cartCount, cartTotal, removeFromCart, checkout } = useShop();
   const { isAdmin } = useUserRole();
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const Header = () => {
                       </button>
                     )}
                     <button
-                      onClick={() => { signOut(); setProfileOpen(false); }}
+                      onClick={() => { logout(); setProfileOpen(false); }}
                       className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-destructive hover:bg-muted transition-colors flex items-center gap-2"
                     >
                       <LogOut className="h-4 w-4" /> Iziet
