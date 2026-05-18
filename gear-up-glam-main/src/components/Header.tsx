@@ -45,7 +45,7 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              
                 key={link.label}
                 href={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 uppercase tracking-wider"
@@ -59,40 +59,45 @@ const Header = () => {
             <DarkModeToggle />
 
             {user ? (
-              <div
-                className="relative"
-                onMouseEnter={() => setProfileOpen(true)}
-                onMouseLeave={() => setProfileOpen(false)}
-              >
-                <button className="flex items-center gap-1 p-2 rounded-full hover:bg-muted transition-colors">
+              <div className="relative">
+                <button
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="flex items-center gap-1 p-2 rounded-full hover:bg-muted transition-colors"
+                >
                   <User className="h-5 w-5" />
                 </button>
                 {profileOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50 animate-fade-in">
-                    <div className="px-4 py-3 border-b border-border">
-                      <p className="text-sm font-medium truncate">{user.email}</p>
-                    </div>
-                    <button
-                      onClick={() => { navigate("/history"); setProfileOpen(false); }}
-                      className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-primary hover:bg-muted transition-colors flex items-center gap-2"
-                    >
-                      <History className="h-4 w-4" /> Iepirkumu vēsture
-                    </button>
-                    {isAdmin && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setProfileOpen(false)}
+                    />
+                    <div className="absolute top-full right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50 animate-fade-in">
+                      <div className="px-4 py-3 border-b border-border">
+                        <p className="text-sm font-medium truncate">{user.email}</p>
+                      </div>
                       <button
-                        onClick={() => { navigate("/admin"); setProfileOpen(false); }}
-                        className="w-full px-4 py-3 text-sm text-left text-primary hover:bg-muted transition-colors flex items-center gap-2 font-semibold"
+                        onClick={() => { navigate("/history"); setProfileOpen(false); }}
+                        className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-primary hover:bg-muted transition-colors flex items-center gap-2"
                       >
-                        <Shield className="h-4 w-4" /> Administrācija
+                        <History className="h-4 w-4" /> Iepirkumu vēsture
                       </button>
-                    )}
-                    <button
-                      onClick={() => { logout(); setProfileOpen(false); }}
-                      className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-destructive hover:bg-muted transition-colors flex items-center gap-2"
-                    >
-                      <LogOut className="h-4 w-4" /> Iziet
-                    </button>
-                  </div>
+                      {isAdmin && (
+                        <button
+                          onClick={() => { navigate("/admin"); setProfileOpen(false); }}
+                          className="w-full px-4 py-3 text-sm text-left text-primary hover:bg-muted transition-colors flex items-center gap-2 font-semibold"
+                        >
+                          <Shield className="h-4 w-4" /> Administrācija
+                        </button>
+                      )}
+                      <button
+                        onClick={() => { logout(); setProfileOpen(false); }}
+                        className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-destructive hover:bg-muted transition-colors flex items-center gap-2"
+                      >
+                        <LogOut className="h-4 w-4" /> Iziet
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             ) : (
@@ -113,36 +118,42 @@ const Header = () => {
                 )}
               </Button>
               {cartOpen && (
-                <div className="absolute top-full right-0 mt-2 w-80 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50 animate-fade-in">
-                  <div className="px-4 py-3 border-b border-border font-semibold">Cart</div>
-                  {cart.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground">Your cart is empty.</div>
-                  ) : (
-                    <>
-                      <div className="max-h-80 overflow-y-auto">
-                        {cart.map((item) => (
-                          <div key={item.id} className="flex items-center gap-3 border-b border-border px-4 py-3">
-                            <img src={item.image} alt={item.name} className="h-12 w-12 rounded-md object-cover" />
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-sm font-medium">{item.name}</p>
-                              <p className="text-xs text-muted-foreground">Qty {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setCartOpen(false)}
+                  />
+                  <div className="absolute top-full right-0 mt-2 w-80 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50 animate-fade-in">
+                    <div className="px-4 py-3 border-b border-border font-semibold">Cart</div>
+                    {cart.length === 0 ? (
+                      <div className="px-4 py-8 text-center text-sm text-muted-foreground">Your cart is empty.</div>
+                    ) : (
+                      <>
+                        <div className="max-h-80 overflow-y-auto">
+                          {cart.map((item) => (
+                            <div key={item.id} className="flex items-center gap-3 border-b border-border px-4 py-3">
+                              <img src={item.image} alt={item.name} className="h-12 w-12 rounded-md object-cover" />
+                              <div className="min-w-0 flex-1">
+                                <p className="truncate text-sm font-medium">{item.name}</p>
+                                <p className="text-xs text-muted-foreground">Qty {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
+                              </div>
+                              <button onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-destructive transition-colors" aria-label="Remove item">
+                                <Trash2 className="h-4 w-4" />
+                              </button>
                             </div>
-                            <button onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-destructive transition-colors" aria-label="Remove item">
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="space-y-3 p-4">
-                        <div className="flex justify-between font-semibold"><span>Total</span><span>${cartTotal.toFixed(2)}</span></div>
-                        <Button className="w-full btn-racing" onClick={handleCheckout}>Pay & Complete Purchase</Button>
-                      </div>
-                    </>
-                  )}
-                </div>
+                          ))}
+                        </div>
+                        <div className="space-y-3 p-4">
+                          <div className="flex justify-between font-semibold"><span>Total</span><span>${cartTotal.toFixed(2)}</span></div>
+                          <Button className="w-full btn-racing" onClick={handleCheckout}>Pay & Complete Purchase</Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </>
               )}
             </div>
-            
+
             {/* Mobile Hamburger Menu */}
             <button
               className="md:hidden"
@@ -158,7 +169,7 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border animate-slide-up">
             {navLinks.map((link) => (
-              <a
+              
                 key={link.label}
                 href={link.href}
                 className="block py-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
