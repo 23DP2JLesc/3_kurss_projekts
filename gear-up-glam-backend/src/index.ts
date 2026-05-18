@@ -14,7 +14,7 @@ import profileRoutes from "./routes/profile.js";
 import userRoutes from "./routes/users.js";
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = Number(process.env.PORT) || 8080;
 
 // CORS SETUP
 const allowedOrigins = [
