@@ -1,7 +1,10 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-moto.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image */}
@@ -40,11 +43,14 @@ const Hero = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <button className="btn-racing inline-flex items-center justify-center gap-2 group">
+            <button
+              onClick={() => navigate("/products")}
+              className="btn-racing inline-flex items-center justify-center gap-2 group"
+            >
               Iepirkties tagad
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <a
+            
               href="/about"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md border border-border hover:border-primary/50 transition-colors font-semibold"
             >
