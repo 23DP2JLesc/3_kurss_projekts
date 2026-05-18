@@ -108,3 +108,8 @@ export const ordersApi = {
       body: JSON.stringify({ items }),
     }),
 };
+
+export const productsApi = {
+  getAll: () =>
+    apiFetch<any>('/products', { method: 'GET' }),
+};
