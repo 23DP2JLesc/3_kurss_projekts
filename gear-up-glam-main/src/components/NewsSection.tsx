@@ -16,26 +16,24 @@ interface NewsArticle {
 // Mock news data (since we can't use real API without key)
 const mockNews: NewsArticle[] = [
   {
-    title: "MotoGP 2024: Revolutionary Aerodynamic Innovations",
-    description: "New carbon fiber fairings and winglet designs are pushing the boundaries of motorcycle racing performance.",
-    url: "#",
-    urlToImage: null,
-    publishedAt: new Date().toISOString(),
-    source: { name: "Racing Weekly" }
-  },
-  {
-    title: "Electric Motorcycles Break Speed Records",
-    description: "The latest electric superbikes are challenging traditional combustion engines in track performance.",
-    url: "#",
-    urlToImage: null,
-    publishedAt: new Date(Date.now() - 86400000).toISOString(),
-    source: { name: "Moto News" }
-  },
-  {
-    title: "Suspension Technology: What's Next?",
-    description: "Active suspension systems are becoming more accessible for everyday riders.",
-    url: "#",
-    urlToImage: null,
+      title: "MotoGP 2024: revolucionāras aerodinamikas inovācijas",
+      description: "Jaunas oglekļa šķiedras virsbūves un spārnu dizaini paplašina sacīkšu braukšanas iespējas.",
+      url: "#",
+      urlToImage: null,
+      publishedAt: new Date().toISOString(),
+      source: { name: "Racing Weekly" }
+    },
+    {
+      title: "Elektriskie motocikli pārspēj ātruma rekordus",
+      description: "Jaunākie elektro superbikes izaicina tradicionālās iekšdedzes dzinēju sniegumu trasē.",
+      url: "#",
+      urlToImage: null,
+      publishedAt: new Date(Date.now() - 86400000).toISOString(),
+      source: { name: "Moto News" }
+    },
+    {
+      title: "Balstiekārtas tehnoloģija: kas nākotnē?",
+      description: "Aktīvās piekares sistēmas kļūst pieejamākas ikdienas braucējiem.",
     publishedAt: new Date(Date.now() - 172800000).toISOString(),
     source: { name: "Tech Riders" }
   },
@@ -70,7 +68,7 @@ const NewsSection = () => {
         timestamp: Date.now()
       }));
     } catch (err) {
-      setError("Unable to load news. Please try again later.");
+      setError("Nevar ielādēt ziņas. Lūdzu, mēģiniet vēlāk.");
       
       // Try to load from cache
       const cached = localStorage.getItem(NEWS_CACHE_KEY);
@@ -101,9 +99,9 @@ const NewsSection = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
+    return date.toLocaleDateString('lv-LV', {
       day: 'numeric',
+      month: 'short',
       year: 'numeric'
     });
   };
@@ -115,9 +113,9 @@ const NewsSection = () => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <div>
             <span className="text-primary uppercase tracking-wider text-sm font-medium">
-              Stay Informed
+              Esi informēts
             </span>
-            <h2 className="font-display text-4xl md:text-5xl mt-2">Racing News</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-2">Sacīkšu ziņas</h2>
           </div>
           <Button
             variant="outline"
@@ -126,7 +124,7 @@ const NewsSection = () => {
             className="border-border hover:border-primary"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
+            Atjaunot
           </Button>
         </div>
 
@@ -136,7 +134,7 @@ const NewsSection = () => {
         {loading && (
           <div className="flex flex-col items-center justify-center py-16">
             <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
-            <p className="text-muted-foreground">Loading latest news...</p>
+            <p className="text-muted-foreground">Ielādē jaunākās ziņas...</p>
           </div>
         )}
 
@@ -146,7 +144,7 @@ const NewsSection = () => {
             <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
             <p className="text-destructive mb-4">{error}</p>
             <Button onClick={fetchNews} className="btn-racing">
-              Try Again
+              Mēģināt vēlreiz
             </Button>
           </div>
         )}
@@ -195,7 +193,7 @@ const NewsSection = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline"
                   >
-                    Read More
+                    Lasīt vairāk
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 </div>
@@ -207,7 +205,7 @@ const NewsSection = () => {
         {/* No News */}
         {!loading && !error && news.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No news available at the moment.</p>
+            <p className="text-muted-foreground">Pašlaik nav pieejamu ziņu.</p>
           </div>
         )}
       </div>

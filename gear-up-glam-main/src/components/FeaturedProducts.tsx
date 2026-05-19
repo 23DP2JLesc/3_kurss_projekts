@@ -10,15 +10,15 @@ const FeaturedProducts = () => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <div>
             <span className="text-primary uppercase tracking-wider text-sm font-medium">
-              Featured Collection
+              Izcelta kolekcija
             </span>
-            <h2 className="font-display text-4xl md:text-5xl mt-2">Top Sellers</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-2">Vispopulārākie produkti</h2>
           </div>
           <a
             href="/shop"
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
           >
-            View All Products
+            Skatīt visus produktus
             <span className="text-primary">→</span>
           </a>
         </div>

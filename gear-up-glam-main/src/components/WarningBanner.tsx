@@ -36,11 +36,11 @@ export const WarningBanner = () => {
       <div className="container mx-auto px-4 py-3 flex items-center gap-3">
         <AlertTriangle className="h-5 w-5 text-destructive shrink-0" />
         <div className="flex-1 text-sm">
-          <span className="font-semibold text-destructive">Admin Warning: </span>
+          <span className="font-semibold text-destructive">Administratora brīdinājums: </span>
           {warning}
         </div>
         <Button size="sm" variant="outline" onClick={acknowledge} className="gap-1">
-          <X className="h-4 w-4" /> Acknowledge
+          <X className="h-4 w-4" /> Saprotu
         </Button>
       </div>
     </div>

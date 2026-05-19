@@ -103,7 +103,7 @@ const Header = () => {
             ) : (
               <Link to="/login">
                 <Button variant="default" size="sm" className="gap-2 font-semibold">
-                  <User className="h-4 w-4" /> Sign In
+                  <User className="h-4 w-4" /> Pieslēgties
                 </Button>
               </Link>
             )}
@@ -124,9 +124,9 @@ const Header = () => {
                     onClick={() => setCartOpen(false)}
                   />
                   <div className="absolute top-full right-0 mt-2 w-80 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50 animate-fade-in">
-                    <div className="px-4 py-3 border-b border-border font-semibold">Cart</div>
+                    <div className="px-4 py-3 border-b border-border font-semibold">Grozs</div>
                     {cart.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-sm text-muted-foreground">Your cart is empty.</div>
+                      <div className="px-4 py-8 text-center text-sm text-muted-foreground">Grozs ir tukšs.</div>
                     ) : (
                       <>
                         <div className="max-h-80 overflow-y-auto">
@@ -135,17 +135,17 @@ const Header = () => {
                               <img src={item.image} alt={item.name} className="h-12 w-12 rounded-md object-cover" />
                               <div className="min-w-0 flex-1">
                                 <p className="truncate text-sm font-medium">{item.name}</p>
-                                <p className="text-xs text-muted-foreground">Qty {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
+                                <p className="text-xs text-muted-foreground">Daudzums {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
                               </div>
-                              <button onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-destructive transition-colors" aria-label="Remove item">
+                              <button onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-destructive transition-colors" aria-label="Noņemt vienību">
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             </div>
                           ))}
                         </div>
                         <div className="space-y-3 p-4">
-                          <div className="flex justify-between font-semibold"><span>Total</span><span>${cartTotal.toFixed(2)}</span></div>
-                          <Button className="w-full btn-racing" onClick={handleCheckout}>Pay & Complete Purchase</Button>
+                          <div className="flex justify-between font-semibold"><span>Kopā</span><span>${cartTotal.toFixed(2)}</span></div>
+                          <Button className="w-full btn-racing" onClick={handleCheckout}>Apmaksāt un pabeigt</Button>
                         </div>
                       </>
                     )}
@@ -158,7 +158,7 @@ const Header = () => {
             <button
               className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label="Pārslēgt izvēlni"
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>

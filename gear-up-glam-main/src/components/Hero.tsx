@@ -44,17 +44,17 @@ const Hero = () => {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <button
-              onClick={() => navigate("/products")}
+              onClick={() => navigate("/shop")}
               className="btn-racing inline-flex items-center justify-center gap-2 group"
             >
               Iepirkties tagad
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            
+            <a
               href="/about"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md border border-border hover:border-primary/50 transition-colors font-semibold"
             >
-              About Us
+              Par mums
             </a>
           </div>
 

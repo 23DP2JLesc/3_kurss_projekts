@@ -2,10 +2,10 @@ import { Star, Clock, TrendingUp } from "lucide-react";
 
 const Sidebar = () => {
   const relatedArticles = [
-    { title: "Top 10 Performance Upgrades for 2024", views: "12.5K" },
-    { title: "How to Choose the Right Exhaust System", views: "8.3K" },
-    { title: "Brake Maintenance Guide", views: "6.1K" },
-    { title: "Suspension Tuning for Track Days", views: "5.4K" },
+    { title: "10 labākie veiktspējas uzlabojumi 2024.", views: "12.5K" },
+    { title: "Kā izvēlēties pareizo izplūdes sistēmu", views: "8.3K" },
+    { title: "Bremžu apkores ceļvedis", views: "6.1K" },
+    { title: "Piekares regulēšana trases dienām", views: "5.4K" },
   ];
 
   return (
@@ -14,7 +14,7 @@ const Sidebar = () => {
       <div>
         <h3 className="font-display text-lg mb-4 flex items-center gap-2">
           <Clock className="h-5 w-5 text-primary" />
-          Related Articles
+          Saistītie raksti
         </h3>
         <ul className="space-y-4">
           {relatedArticles.map((article, index) => (
@@ -28,7 +28,7 @@ const Sidebar = () => {
                 </p>
                 <span className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                   <Star className="h-3 w-3" />
-                  {article.views} views
+                  {article.views} skatījumi
                 </span>
               </a>
             </li>
@@ -38,13 +38,13 @@ const Sidebar = () => {
 
       {/* Promo Banner */}
       <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-4 text-center">
-        <p className="text-primary font-display text-lg">FLASH SALE</p>
-        <p className="text-sm text-muted-foreground mt-1">Up to 40% off racing parts</p>
+        <p className="text-primary font-display text-lg">ĀTRAIS IZPĀRDOŠANA</p>
+        <p className="text-sm text-muted-foreground mt-1">Līdz 40% atlaide sacīkšu detaļām</p>
         <a
           href="#"
           className="inline-block mt-3 px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-md hover:bg-primary/90 transition-colors"
         >
-          Shop Now
+          Iepērcies tagad
         </a>
       </div>
     </aside>

@@ -83,7 +83,7 @@ const Admin = () => {
       const response = await categoriesApi.getAll();
       setCategories(Array.isArray(response) ? response : response.data || []);
     } catch (error) {
-      toast.error("Failed to load categories");
+      toast.error("Neizdevās ielādēt kategorijas");
     }
     setCategoriesLoading(false);
   };
@@ -98,7 +98,7 @@ const Admin = () => {
       const response = await usersApi.getAll();
       setUsers(Array.isArray(response) ? response : response.data || []);
     } catch (error) {
-      toast.error("Failed to load users");
+      toast.error("Neizdevās ielādēt lietotājus");
     }
     setUsersLoading(false);
   };
@@ -106,7 +106,7 @@ const Admin = () => {
   if (authLoading || roleLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">
-        Loading…
+        Ielādējas…
       </div>
     );
   }
@@ -119,8 +119,8 @@ const Admin = () => {
         <Header />
         <main className="pt-32 container mx-auto px-4 text-center">
           <ShieldCheck className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-          <h1 className="font-display text-4xl">Admins Only</h1>
-          <p className="text-muted-foreground mt-2">You don't have permission to view this page.</p>
+          <h1 className="font-display text-4xl">Tikai administratoriem</h1>
+          <p className="text-muted-foreground mt-2">Tev nav tiesību skatīt šo lapu.</p>
         </main>
         <Footer />
       </div>
@@ -183,7 +183,7 @@ const Admin = () => {
     if (!confirm("Dzēst šo produktu?")) return;
     try {
       await productsApi.delete(id);
-      toast.success("Deleted");
+      toast.success("Dzēsts");
       refetch();
     } catch (error: any) {
       return toast.error(error.message);
@@ -195,7 +195,7 @@ const Admin = () => {
     const banned = !u.banned;
     try {
       await usersApi.updateStatus(u.id, { banned });
-      toast.success(banned ? "User banned" : "User unbanned");
+      toast.success(banned ? "Lietotājs bloķēts" : "Lietotājs atbloķēts");
       loadUsers();
     } catch (error: any) {
       return toast.error(error.message);
@@ -350,16 +350,16 @@ const Admin = () => {
                       <TableCell className="font-medium">{u.email}</TableCell>
                       <TableCell>
                         <span className={u.role?.toLowerCase() === "admin" ? "text-primary font-semibold" : ""}>
-                          {u.role || "user"}
+                          {u.role || "lietotājs"}
                         </span>
                       </TableCell>
                       <TableCell>
                         {u.banned ? (
-                          <span className="text-destructive font-semibold">Banned</span>
+                          <span className="text-destructive font-semibold">Bloķēts</span>
                         ) : u.warningMessage ? (
-                          <span className="text-yellow-500">Warned</span>
+                          <span className="text-yellow-500">Brīdināts</span>
                         ) : (
-                          <span className="text-muted-foreground">Active</span>
+                          <span className="text-muted-foreground">Aktīvs</span>
                         )}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
@@ -373,7 +373,7 @@ const Admin = () => {
                             onClick={() => { setWarnTarget(u); setWarnText(u.warningMessage || ""); }}
                             disabled={u.id === user.id}
                           >
-                            <AlertTriangle className="h-3 w-3 mr-1" /> Warn
+                            <AlertTriangle className="h-3 w-3 mr-1" /> Brīdināt
                           </Button>
                           <Button
                             size="sm"
@@ -382,7 +382,7 @@ const Admin = () => {
                             disabled={u.id === user.id}
                           >
                             <Ban className="h-3 w-3 mr-1" />
-                            {u.banned ? "Unban" : "Ban"}
+                            {u.banned ? "Atbloķēt" : "Bloķēt"}
                           </Button>
                         </div>
                       </TableCell>
@@ -397,22 +397,22 @@ const Admin = () => {
           <TabsContent value="categories" className="mt-6">
             <div className="flex justify-end mb-4">
               <Button onClick={openCreateCategory} className="gap-2">
-                <Plus className="h-4 w-4" /> New category
+                <Plus className="h-4 w-4" /> Jauna kategorija
               </Button>
             </div>
             <div className="rounded-lg border border-border bg-card overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>Nosaukums</TableHead>
+                    <TableHead>Apraksts</TableHead>
+                    <TableHead>Izveidots</TableHead>
+                    <TableHead className="text-right">Darbības</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {categoriesLoading && (
-                    <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading…</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Ielādē...</TableCell></TableRow>
                   )}
                   {categories.map((c) => (
                     <TableRow key={c.id}>
@@ -445,45 +445,45 @@ const Admin = () => {
       <Dialog open={creating || !!editing} onOpenChange={(o) => !o && closeDialogs()}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{editing ? "Edit Product" : "New Product"}</DialogTitle>
+            <DialogTitle>{editing ? "Rediģēt produktu" : "Jauns produkts"}</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <Label>Name</Label>
+              <Label>Nosaukums</Label>
               <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
-            <div><Label>Brand</Label><Input value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} /></div>
-            <div><Label>Model</Label><Input value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} /></div>
-            <div><Label>Type</Label><Input value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} /></div>
-            <div><Label>Category</Label><Input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} /></div>
+            <div><Label>Marka</Label><Input value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} /></div>
+            <div><Label>Modelis</Label><Input value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} /></div>
+            <div><Label>Veids</Label><Input value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} /></div>
+            <div><Label>Kategorija</Label><Input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} /></div>
             <div>
-              <Label>Price</Label>
+              <Label>Cena</Label>
               <Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: parseFloat(e.target.value) || 0 })} />
             </div>
             <div>
-              <Label>Original Price (optional)</Label>
+              <Label>Sākotnējā cena (pēc izvēles)</Label>
               <Input type="number" step="0.01" value={form.original_price ?? ""} onChange={(e) => setForm({ ...form, original_price: e.target.value ? parseFloat(e.target.value) : null })} />
             </div>
             <div>
-              <Label>Stock</Label>
+              <Label>Krājums</Label>
               <Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: parseInt(e.target.value) || 0 })} />
             </div>
             <div>
-              <Label>Fitment (comma-separated)</Label>
+              <Label>Fitment (ar komatiem atdalīts)</Label>
               <Input value={form.fitment.join(", ")} onChange={(e) => setForm({ ...form, fitment: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} />
             </div>
             <div className="col-span-2">
-              <Label>Image URL</Label>
-              <Input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="https://… or /src/assets/product-exhaust.jpg" />
+              <Label>Attēla URL</Label>
+              <Input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="https://… vai /src/assets/product-exhaust.jpg" />
             </div>
             <div className="col-span-2">
-              <Label>Description</Label>
+              <Label>Apraksts</Label>
               <Textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={closeDialogs}>Cancel</Button>
-            <Button onClick={saveProduct}>Save</Button>
+            <Button variant="outline" onClick={closeDialogs}>Atcelt</Button>
+            <Button onClick={saveProduct}>Saglabāt</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -492,17 +492,17 @@ const Admin = () => {
       <Dialog open={!!warnTarget} onOpenChange={(o) => !o && setWarnTarget(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Warn {warnTarget?.email}</DialogTitle>
+            <DialogTitle>Brīdināt {warnTarget?.email}</DialogTitle>
           </DialogHeader>
           <Textarea
             rows={4}
-            placeholder="Explain what they did wrong…"
+            placeholder="Izskaidro, kas notika…"
             value={warnText}
             onChange={(e) => setWarnText(e.target.value)}
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setWarnTarget(null)}>Cancel</Button>
-            <Button onClick={sendWarning} disabled={!warnText.trim()}>Send Warning</Button>
+            <Button variant="outline" onClick={() => setWarnTarget(null)}>Atcelt</Button>
+            <Button onClick={sendWarning} disabled={!warnText.trim()}>Sūtīt brīdinājumu</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -511,21 +511,21 @@ const Admin = () => {
       <Dialog open={creatingCategory || !!editingCategory} onOpenChange={(o) => !o && closeCategoryDialogs()}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingCategory ? "Edit Category" : "New Category"}</DialogTitle>
+            <DialogTitle>{editingCategory ? "Rediģēt kategoriju" : "Jauna kategorija"}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
             <div>
-              <Label>Name</Label>
+              <Label>Nosaukums</Label>
               <Input value={categoryForm.name} onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })} />
             </div>
             <div>
-              <Label>Description (optional)</Label>
+              <Label>Apraksts (pēc izvēles)</Label>
               <Textarea rows={3} value={categoryForm.description} onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })} />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={closeCategoryDialogs}>Cancel</Button>
-            <Button onClick={saveCategory}>Save</Button>
+            <Button variant="outline" onClick={closeCategoryDialogs}>Atcelt</Button>
+            <Button onClick={saveCategory}>Saglabāt</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

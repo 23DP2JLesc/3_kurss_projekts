@@ -35,23 +35,23 @@ const ContactForm = () => {
     const newErrors: FormErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = "Vārds ir obligāts";
     } else if (formData.name.length > 100) {
-      newErrors.name = "Name must be less than 100 characters";
+      newErrors.name = "Vārdam jābūt mazākam par 100 rakstzīmēm";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "E-pasts ir obligāts";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = "Lūdzu, ievadi derīgu e-pasta adresi";
     } else if (formData.email.length > 255) {
-      newErrors.email = "Email must be less than 255 characters";
+      newErrors.email = "E-pastam jābūt mazākam par 255 rakstzīmēm";
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
+      newErrors.message = "Ziņa ir obligāta";
     } else if (formData.message.length > 1000) {
-      newErrors.message = "Message must be less than 1000 characters";
+      newErrors.message = "Ziņai jābūt mazākai par 1000 rakstzīmēm";
     }
 
     setErrors(newErrors);
@@ -95,11 +95,11 @@ const ContactForm = () => {
           {/* Section Header */}
           <div className="text-center mb-12">
             <span className="text-primary uppercase tracking-wider text-sm font-medium">
-              Get in Touch
+              Sazinies ar mums
             </span>
-            <h2 className="font-display text-4xl md:text-5xl mt-2">Contact Us</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-2">Sazināties</h2>
             <p className="text-muted-foreground mt-4">
-              Have questions about our products? We're here to help.
+              Ir jautājumi par mūsu produktiem? Mēs esam gatavi palīdzēt.
             </p>
           </div>
 
@@ -108,7 +108,7 @@ const ContactForm = () => {
             <div className="mb-8 p-4 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-3 animate-slide-up">
               <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
               <p className="text-green-500">
-                Thank you! Your message has been sent successfully. We'll get back to you soon.
+                Paldies! Tava ziņa ir nosūtīta. Mēs drīzumā ar tevi sazināsimies.
               </p>
             </div>
           )}
@@ -118,7 +118,7 @@ const ContactForm = () => {
             {/* Name Field */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
-                Name <span className="text-primary">*</span>
+                Vārds <span className="text-primary">*</span>
               </label>
               <Input
                 id="name"
@@ -126,7 +126,7 @@ const ContactForm = () => {
                 type="text"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Your name"
+                placeholder="Tavs vārds"
                 className={`bg-card border-border focus:border-primary transition-colors ${
                   errors.name ? "border-destructive animate-shake" : ""
                 }`}
@@ -143,7 +143,7 @@ const ContactForm = () => {
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email <span className="text-primary">*</span>
+                E-pasts <span className="text-primary">*</span>
               </label>
               <Input
                 id="email"
@@ -151,7 +151,7 @@ const ContactForm = () => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="your@email.com"
+                placeholder="tavs@epasts.lv"
                 className={`bg-card border-border focus:border-primary transition-colors ${
                   errors.email ? "border-destructive animate-shake" : ""
                 }`}
@@ -168,14 +168,14 @@ const ContactForm = () => {
             {/* Message Field */}
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2">
-                Message <span className="text-primary">*</span>
+                Ziņa <span className="text-primary">*</span>
               </label>
               <Textarea
                 id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Your message..."
+                placeholder="Tava ziņa..."
                 rows={5}
                 className={`bg-card border-border focus:border-primary transition-colors resize-none ${
                   errors.message ? "border-destructive animate-shake" : ""
@@ -206,12 +206,12 @@ const ContactForm = () => {
               {isSubmitting ? (
                 <>
                   <span className="animate-spin mr-2">⏳</span>
-                  Sending...
+                  Sūtu...
                 </>
               ) : (
                 <>
                   <Send className="h-4 w-4 mr-2" />
-                  Send Message
+                  Sūtīt ziņu
                 </>
               )}
             </Button>

@@ -78,7 +78,7 @@ const ShoppingHistory = () => {
 
       setOrders(parsed);
     } catch (error) {
-      console.error("Failed to fetch history:", error);
+      console.error("Neizdevās ielādēt vēsturi:", error);
     }
     setLoading(false);
   };

@@ -85,7 +85,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = async (product: ShopProduct, quantity: number = 1) => {
     if (product.stock <= 0) {
-      toast.error("This part is currently out of stock.");
+      toast.error("Šī detaļa pašlaik nav noliktavā.");
       return;
     }
 
@@ -94,9 +94,9 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         const response = await cartApi.addItem(product.id, quantity);
         // Resync to get cartItemIds
         await syncCart();
-        toast.success(`${product.name} added to cart.`);
+        toast.success(`${product.name} ir pievienots grozam.`);
       } catch (err) {
-        toast.error("Failed to add item to cart.");
+        toast.error("Neizdevās pievienot grozam.");
       }
     } else {
       setCart((items) => {
@@ -110,7 +110,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         }
         return [...items, { ...product, quantity }];
       });
-      toast.success(`${product.name} added to cart.`);
+      toast.success(`${product.name} ir pievienots grozam.`);
     }
   };
 
@@ -130,7 +130,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
           items.map((item) => item.id === id ? { ...item, quantity } : item),
         );
       } catch (err) {
-        toast.error("Failed to update quantity.");
+        toast.error("Neizdevās atjaunināt daudzumu.");
       }
     } else {
       setCart((items) =>
@@ -148,7 +148,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         }
         setCart((items) => items.filter((item) => item.id !== id));
       } catch (err) {
-        toast.error("Failed to remove item.");
+        toast.error("Neizdevās noņemt preci.");
       }
     } else {
       setCart((items) => items.filter((item) => item.id !== id));
@@ -161,7 +161,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         ? items.filter((id) => id !== product.id)
         : [...items, product.id],
     );
-    toast.success(favorites.includes(product.id) ? "Removed from wishlist." : "Saved to wishlist.");
+    toast.success(favorites.includes(product.id) ? "Noņemts no vēlmju saraksta." : "Pievienots vēlmju sarakstam.");
   };
 
   const checkout = async () => {
@@ -179,7 +179,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
       }));
       localStorage.setItem(GUEST_HISTORY_KEY, JSON.stringify([...purchasedItems, ...currentHistory]));
       setCart([]);
-      toast.success("Payment complete — your product is purchased.");
+      toast.success("Apmaksa pabeigta — tavs produkts ir iegādāts.");
       return true;
     }
 
@@ -193,12 +193,12 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
       );
       await cartApi.clearCart();
     } catch (err) {
-      toast.error("Checkout failed. Please try again.");
+      toast.error("Norēķini neizdevās. Lūdzu, mēģini vēlreiz.");
       return false;
     }
 
     setCart([]);
-    toast.success("Payment complete — your product is purchased.");
+    toast.success("Apmaksa pabeigta — tavs produkts ir iegādāts.");
     return true;
   };
 

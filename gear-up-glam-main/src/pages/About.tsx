@@ -3,10 +3,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const values = [
-  { icon: Gauge, title: "Track tested", text: "Parts selected for riders who care about braking feel, throttle response, and lap-after-lap consistency." },
-  { icon: ShieldCheck, title: "Trusted quality", text: "Every product is chosen around fitment, durability, and real-world reliability before it reaches the shop." },
-  { icon: Wrench, title: "Fitment support", text: "We help match parts to your bike model, build style, and performance goals." },
-  { icon: Award, title: "Race mindset", text: "A focused catalogue for sportbike, street, and performance builds without the generic clutter." },
+  { icon: Gauge, title: "Pārbaudīts trasē", text: "Detaļas izvēlētas braucējiem, kuriem svarīga bremzēšanas sajūta, reakcija uz gāzi un konsekvence apļa pēc apļa." },
+  { icon: ShieldCheck, title: "Uzticama kvalitāte", text: "Katrs produkts tiek atlasīts pēc fitmenta, izturības un reālās lietošanas uzticamības pirms nonākšanas veikalā." },
+  { icon: Wrench, title: "Fitmenta atbalsts", text: "Mēs palīdzam izvēlēties detaļas atbilstoši tavam motocikla modelim, stilam un veiktspējas mērķiem." },
+  { icon: Award, title: "Sacīkšu domāšana", text: "Katalogs koncentrēts uz sporta, ielas un veiktspējas komplektiem bez nevajadzīga trokšņa." },
 ];
 
 const About = () => {

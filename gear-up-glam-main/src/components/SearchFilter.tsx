@@ -305,7 +305,7 @@ const productTypes = categories.length > 0 ? categories : Array.from(new Set(pro
 
           <div className="md:col-span-5 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
             <Slider value={[maxPrice]} min={100} max={2500} step={50} onValueChange={([value]) => setMaxPrice(value)} />
-            <span className="text-sm text-muted-foreground">Max ${maxPrice}</span>
+            <span className="text-sm text-muted-foreground">Maks. ${maxPrice}</span>
           </div>
         </div>
 
