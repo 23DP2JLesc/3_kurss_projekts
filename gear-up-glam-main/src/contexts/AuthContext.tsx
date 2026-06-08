@@ -48,10 +48,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const logout = () => {
-    clearAuthToken();
-    localStorage.removeItem('auth_user');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      console.error("Logout API error:", error);
+    } finally {
+      clearAuthToken();
+      localStorage.removeItem('auth_user');
+      setUser(null);
+    }
   };
 
   return (

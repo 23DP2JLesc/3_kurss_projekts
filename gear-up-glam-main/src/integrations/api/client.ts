@@ -41,7 +41,8 @@ export const authApi = {
     apiFetch('/auth/register', { method: 'POST', body: JSON.stringify({ email, password, displayName }) }),
   login: (email: string, password: string) =>
     apiFetch('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
-  logout: () => { clearAuthToken(); return apiFetch('/auth/logout', { method: 'POST' }); },
+  logout: () => 
+    apiFetch('/auth/logout', { method: 'POST' }).finally(() => clearAuthToken()),
 };
 
 export const productsApi = {

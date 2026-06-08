@@ -26,12 +26,11 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      logout();
+      await logout();
       setProfileOpen(false);
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
-      // Clear locally even if API call fails
       setProfileOpen(false);
       navigate("/");
     }
