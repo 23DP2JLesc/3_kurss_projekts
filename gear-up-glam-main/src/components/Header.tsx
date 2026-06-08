@@ -91,7 +91,11 @@ const Header = () => {
                         </button>
                       )}
                       <button
-                        onClick={() => { logout(); setProfileOpen(false); }}
+                        onClick={() => { 
+                          logout(); 
+                          setProfileOpen(false);
+                          navigate("/");
+                        }}
                         className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-destructive hover:bg-muted transition-colors flex items-center gap-2"
                       >
                         <LogOut className="h-4 w-4" /> Iziet
