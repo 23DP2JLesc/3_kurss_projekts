@@ -57,7 +57,7 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              
+              <a
                 key={link.label}
                 href={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 uppercase tracking-wider"
@@ -181,7 +181,7 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border animate-slide-up">
             {navLinks.map((link) => (
-              
+              <a
                 key={link.label}
                 href={link.href}
                 className="block py-3 text-lg font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
