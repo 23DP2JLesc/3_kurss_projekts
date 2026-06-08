@@ -24,6 +24,19 @@ const Header = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      logout();
+      setProfileOpen(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Clear locally even if API call fails
+      setProfileOpen(false);
+      navigate("/");
+    }
+  };
+
   const navLinks = [
     { label: "Veikals", href: "/shop" },
     { label: "Par mums", href: "/about" },
@@ -91,11 +104,7 @@ const Header = () => {
                         </button>
                       )}
                       <button
-                        onClick={() => { 
-                          logout(); 
-                          setProfileOpen(false);
-                          navigate("/");
-                        }}
+                        onClick={handleLogout}
                         className="w-full px-4 py-3 text-sm text-left text-muted-foreground hover:text-destructive hover:bg-muted transition-colors flex items-center gap-2"
                       >
                         <LogOut className="h-4 w-4" /> Iziet
