@@ -74,7 +74,7 @@ const Header = () => {
               <div className="relative">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-1 p-2 rounded-full hover:bg-muted transition-colors"
+                  className="flex items-center gap-1 p-2 rounded-full"
                 >
                   <User className="h-5 w-5" />
                 </button>
